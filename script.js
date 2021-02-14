@@ -1,66 +1,72 @@
 window.onload = function(){
     const stage = document.getElementById('stage');
-    const ctx = stage.getContext("2d");
-    document.addEventListener("keydown",keyPush)
+    const context = stage.getContext("2d");
+    document.addEventListener("keydown",keyPush);
 
+    
     setInterval(game, 60);
-    const vel = 1;
-    var vx = vy = 0;
-    var px =  10;
-    var py = 15;
-    var tp = 20;
-    var qp = 20;
-    var ax = ay=15;
+    const velocidade = 1;
+    var velocidadeX = velocidadeY = 0;
+    var pontoX =  10;
+    var pontoY = 15;
+    var tamanhoPeca = 20;
+    var quantidadePeca = 20;
+    var pontoRedx = pontoRedy=15;
 
-    var trail = [];
-    tail = 5;
+    var rastroCobra = [];
+    caldaCobra = 5;
 
 
     function game(){
-        px  += vx;
-        py += vy;
-        if(px <0 ){
-            px = qp -1;
+        pontoX  += velocidadeX;
+        pontoY += velocidadeY;
+        if(pontoX <0 ){
+            pontoX = quantidadePeca -1;
         }   
-        if(px > qp-1){
-            px = 0
+        if(pontoX > quantidadePeca-1){
+            pontoX = 0
         }
-        if(py < 0){
-            py = qp-1;
+        if(pontoY < 0){
+            pontoY = quantidadePeca-1;
         }
-        if(py > qp-1){
-            py = 0;
+        if(pontoY > quantidadePeca-1){
+            pontoY = 0;
         }
 
-        ctx.fillStyle = "black";
-        ctx.fillRect(0,0, stage.width, stage.height);
+        context.fillStyle = "black";
+        context.fillRect(0,0, stage.width, stage.height);
 
-        ctx.fillStyle = "red";
-        ctx.fillRect(ax*tp, ay*tp, tp,tp);
+        context.fillStyle = "red";
+        context.fillRect(pontoRedx * tamanhoPeca, pontoRedy * tamanhoPeca, tamanhoPeca,tamanhoPeca);
 
-        ctx.fillStyle = "blue";
-        for(var i =0; i < trail.length; i++){
-            ctx.fillRect(trail[i].x*tp, trail[i].y*tp, tp,tp);
+        context.fillStyle = "blue";
+        for(var i =0; i < rastroCobra.length; i++){
+            context.fillRect(rastroCobra[i].x*tamanhoPeca, rastroCobra[i].y*tamanhoPeca, tamanhoPeca,tamanhoPeca);
 
-            if(trail[i].x == px && trail[i].y == py){
-                startGame()
+
+            
+            if(rastroCobra[i].x == pontoX && rastroCobra[i].y == pontoY){
+                velocidadeX = velocidadeY=0;
+                caldaCobra = 5;
 
             }
 
         }
 
-        trail.push({
-            x:px,
-            y:py
+        rastroCobra.push({
+            x:pontoX,
+            y:pontoY
         })
-        while (trail.length > tail){
-            trail.shift();
+        while (rastroCobra.length > caldaCobra){
+            rastroCobra.shift();
         }
 
-        if(ax==px && ay==py){
-            tail++;
-            ax = Math.floor(Math.random()*qp);
-            ay = Math.floor(Math.random()*qp);
+        if(pontoRedx==pontoX && pontoRedy==pontoY){
+            caldaCobra++;
+           document.getElementById('content-total').innerHTML = `Total: ${Number(caldaCobra) - 5}`;
+           
+            pontoRedx = Math.floor(Math.random()*quantidadePeca);
+            pontoRedy = Math.floor(Math.random()*quantidadePeca);
 
         }
     
@@ -70,20 +76,20 @@ window.onload = function(){
 function keyPush(event){
     switch (event.keyCode){
         case 37:
-            vx = -vel;
-            vy =0
+            velocidadeX = -velocidade;
+            velocidadeY =0
             break;
         case 38:
-            vx = 0;
-            vy = -vel
+            velocidadeX = 0;
+            velocidadeY = -velocidade
             break;
         case 39:
-            vx = vel;
-            vy =0
+            velocidadeX = velocidade;
+            velocidadeY =0
             break;
         case 40:
-            vx = 0;
-            vy = vel
+            velocidadeX = 0;
+            velocidadeY = velocidade
             break;  
         default:
             
@@ -91,9 +97,5 @@ function keyPush(event){
     }
 }
 
-function startGame(){
-    vx = vy=0;
-    tail = 5;
-}
 
 }
